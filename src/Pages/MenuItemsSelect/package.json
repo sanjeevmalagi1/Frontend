@@ -1,0 +1,7 @@
+{
+    "name": "MenuItemsSelect",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./MenuItemsSelect.js"
+  }
+  
