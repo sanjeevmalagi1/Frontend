@@ -13,6 +13,7 @@ import AppBarCust from '../../Components/AppBar';
 import DrawerCust from '../../Components/DrawerCust'
 
 import ListTodos from '../../Pages/ListTodos';
+import CreateTodo from '../../Pages/CreateTodo';
 
 const drawerWidth = 240;
 
@@ -46,7 +47,9 @@ function ClippedDrawer(props) {
         <div className={classes.toolbar} />
         <div className={classes.mainContent}>
           <Switch>
+          
             <Route exact path="/" name="Todo List" component={ListTodos}/>
+            <Route exact path="/CreateTodo" name="Create Todo" component={CreateTodo}/>
           </Switch>
         </div>
       </main>

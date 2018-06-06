@@ -1,7 +1,8 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 
-import _ from 'lodash';
+import _ from 'lodash'; 
+import { NavLink } from 'react-router-dom'
 
 import LoadingPlaceholder from 'react-loading-placeholder'
 
@@ -25,6 +26,9 @@ const styles = theme =>({
   drawerPaper : {
     position: 'relative',
     width: drawerWidth,
+  },
+  link : {
+    textDecoration: 'none'
   }
 });
 
@@ -34,16 +38,6 @@ class DrawerCust extends Component {
     const { menuItems,classes } = this.props;
     const loading = _.get(menuItems,"loading",true)
     
-    const catogories = _.map(menuItems.categories,(category,name)=>(
-      <ListItem button key={name}>
-          <ListItemText>
-            <a href={`#${name}`}>
-              <Typography>{name}</Typography>
-            </a>
-          </ListItemText>
-      </ListItem>
-    ))
-
     return (
       <Drawer
       variant="permanent"
@@ -53,12 +47,16 @@ class DrawerCust extends Component {
     >
       <div className={classes.toolbar} />
       <List component="nav">
-        <ListItem button>
-          <ListItemText primary="Todos List" />
+        <NavLink to="/" activeClassName="active" className={classes.link}>
+          <ListItem button>
+            <ListItemText primary="Todos List" />
+          </ListItem>
+        </NavLink>
+        <NavLink to="/CreateTodo" activeClassName="active" className={classes.link}>
+        <ListItem button  >
+          <ListItemText primary="Create Todo" />
         </ListItem>
-        <ListItem button component="a"  >
-          <ListItemText primary="Spam" />
-        </ListItem>
+        </NavLink>
       </List>
       <Divider />
     </Drawer>
