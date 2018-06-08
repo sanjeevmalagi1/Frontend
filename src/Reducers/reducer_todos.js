@@ -6,6 +6,18 @@ import {
     GET_TODOS_FAILED
 } from '../Actions/Todos'
 
+import { 
+    GET_TODO_REQUEST,
+    GET_TODO_SUCCESS,
+    GET_TODO_FAILED
+} from '../Actions/Todos'
+
+import { 
+    DELETE_TODO_REQUEST,
+    DELETE_TODO_SUCCESS,
+    DELETE_TODO_FAILED
+} from '../Actions/Todos'
+
 export default function(state={},action){
     
     switch (action.type) {
@@ -27,6 +39,23 @@ export default function(state={},action){
                 data : {},
                 loading : false,
                 error : true
+            }
+        }
+        case GET_TODO_SUCCESS : {
+            const { payload } = action;
+            return {
+                ...state,
+                data : {
+                    ...state.data,
+                    [payload._id] : payload
+                }
+            }
+        }
+        case DELETE_TODO_SUCCESS : {
+            const { payload } = action;
+            return {
+                ...state,
+                data : _.omit(state.data , payload._id)
             }
         }
         default:

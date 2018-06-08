@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Router, Route, Switch } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -20,7 +20,7 @@ class App extends Component {
       <div className="main-app">
         <Provider store={createStoreWithMiddleware(reducers)}>
             
-              <Router history={history} >
+              <Router >
                 <Switch>
                   <Route path="/" name="Main Page" component={Main} />
                 </Switch>

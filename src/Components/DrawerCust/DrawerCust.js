@@ -8,7 +8,7 @@ import LoadingPlaceholder from 'react-loading-placeholder'
 
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -34,44 +34,65 @@ const styles = theme =>({
 
 class DrawerCust extends Component {
 
+  handleClose(){
+    this.props.closeDrawer();
+  }
+
+  handleOpen(){
+    this.props.openDrawer();
+  }
+
   render() {
     const { menuItems,classes } = this.props;
     const loading = _.get(menuItems,"loading",true)
     
     return (
-      <Drawer
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
+      <SwipeableDrawer
+        open={this.props.menu.drawer}  
+        anchor="left"
+        onClose={this.handleClose.bind(this)}
+        onOpen={this.handleOpen.bind(this)}
     >
       <div className={classes.toolbar} />
-      <List component="nav">
-        <NavLink to="/" activeClassName="active" className={classes.link}>
+      <List component="nav" className={classes.drawerPaper}>
+        <NavLink to="/" activeClassName="active" className={classes.link} onClick={this.handleClose.bind(this)}>
           <ListItem button>
             <ListItemText primary="Todos List" />
           </ListItem>
         </NavLink>
-        <NavLink to="/CreateTodo" activeClassName="active" className={classes.link}>
+        <NavLink to="/CreateTodo" activeClassName="active" className={classes.link} onClick={this.handleClose.bind(this)}>
         <ListItem button  >
           <ListItemText primary="Create Todo" />
         </ListItem>
         </NavLink>
       </List>
       <Divider />
-    </Drawer>
+    </SwipeableDrawer>
     );
   }
 }
 
 function mapStateToProps(state){
   return {
-    menuItems : state.menuItems
-  };
+    menu : state.menu
+  }
+}
+
+function mapDispatchToProps(){
+  return (dispatch) => ({
+      closeDrawer: () => {
+        dispatch({ type: "CLOSE_DRAWER" })
+      },
+      openDrawer : () => {
+        dispatch({ type: "OPEN_DRAWER" })
+      }
+  })
 }
 
 DrawerCust.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps,{})(withStyles(styles)(DrawerCust));
+const StyledDrawer = withStyles(styles)(DrawerCust)
+
+export default connect(mapStateToProps,mapDispatchToProps)(StyledDrawer);

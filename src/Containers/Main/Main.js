@@ -7,13 +7,14 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 
 import AppBarCust from '../../Components/AppBar';
 import DrawerCust from '../../Components/DrawerCust'
 
 import ListTodos from '../../Pages/ListTodos';
 import CreateTodo from '../../Pages/CreateTodo';
+import LogIn from '../../Pages/LogIn';
+import SignUp from '../../Pages/SignUp';
 
 const drawerWidth = 240;
 
@@ -50,6 +51,8 @@ function ClippedDrawer(props) {
           
             <Route exact path="/" name="Todo List" component={ListTodos}/>
             <Route exact path="/CreateTodo" name="Create Todo" component={CreateTodo}/>
+            <Route exact path="/LogIn" name="Log In" component={LogIn}/>
+            <Route exact path="/SignUp" name="Sign Up" component={SignUp}/>
           </Switch>
         </div>
       </main>

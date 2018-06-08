@@ -1,10 +1,21 @@
 import { 
     getTodosRequest,
+    createTodoRequest,
+    updateTodoRequest,
+    deleteTodoRequest
 } from '../API/Todos';
 
 export const GET_TODOS_REQUEST = "GET_TODOS_REQUEST";
 export const GET_TODOS_SUCCESS = "GET_TODOS_SUCCESS";
 export const GET_TODOS_FAILED = "GET_TODOS_FAILED";
+
+export const GET_TODO_REQUEST = "GET_TODO_REQUEST";
+export const GET_TODO_SUCCESS = "GET_TODO_SUCCESS";
+export const GET_TODO_FAILED = "GET_TODO_FAILED";
+
+export const DELETE_TODO_REQUEST = "DELETE_TODO_REQUEST";
+export const DELETE_TODO_SUCCESS = "DELETE_TODO_SUCCESS";
+export const DELETE_TODO_FAILED = "DELETE_TODO_FAILED";
 
 export function getTodos(){
     return (dispatch) => {
@@ -17,4 +28,47 @@ export function getTodos(){
           dispatch({ type: GET_TODOS_FAILED,payload : error })
         })
     }
+}
+
+export function createTodo(values,callback){
+  return (dispatch) => {
+    //dispatch({ type: GET_TODO_REQUEST })
+    createTodoRequest(values)
+      .then(data =>{
+        callback()
+        //dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
+      })
+      .catch(error =>{
+        //dispatch({ type: GET_TODO_FAILED,payload : error })
+      })
+  }
+}
+
+export function updateTodo(todoId,values){
+  return (dispatch) => {
+    dispatch({ type: GET_TODO_REQUEST })
+    updateTodoRequest(todoId,values)
+      .then(data =>{
+        console.log(data);
+        dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
+      })
+      .catch(error =>{
+        dispatch({ type: GET_TODO_FAILED,payload : error })
+      })
+  }
+}
+
+export function deleteTodo(todoId,callback){
+  return (dispatch) => {
+    dispatch({ type: DELETE_TODO_REQUEST })
+    deleteTodoRequest(todoId)
+      .then(data =>{
+        callback(null,data);
+        dispatch({ type: DELETE_TODO_SUCCESS,payload : data.data })
+      })
+      .catch(error =>{
+        callback(error);
+        dispatch({ type: DELETE_TODO_FAILED,payload : error })
+      })
+  }
 }
