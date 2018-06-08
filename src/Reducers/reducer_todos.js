@@ -18,7 +18,13 @@ import {
     DELETE_TODO_FAILED
 } from '../Actions/Todos'
 
-export default function(state={},action){
+const INITIAL_STATE = {
+    loading : false,
+    error : false,
+    data : {}
+}
+
+export default function(state=INITIAL_STATE,action){
     
     switch (action.type) {
         case GET_TODOS_REQUEST:{

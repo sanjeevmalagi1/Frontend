@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
-import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk'
@@ -9,8 +8,6 @@ import ReduxThunk from 'redux-thunk'
 import reducers from './Reducers';
 
 import Main from './Containers/Main';
-
-const history = createBrowserHistory();
 
 const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
 

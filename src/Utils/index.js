@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 // export function renderField(field){
@@ -21,7 +23,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 // }) 
 
 export const renderField = props =>{
-      
       return (
         <span>
         <TextField
@@ -38,15 +39,20 @@ export const renderField = props =>{
 export const renderSelectField = ({
     input,
     label,
-    meta: { touched, error },
     children,
+    required,
     ...custom
   }) =>{
       return (
-        <Select
-          {...input}
-          children={children}
-          {...custom}
-        />
+        <FormControl error={custom.meta.touched && !!custom.meta.error}>
+          <InputLabel htmlFor="name-error">{label}</InputLabel>
+          <Select
+            {...input}
+            required={required}
+            children={children}
+            {...custom}
+          />
+          {custom.meta.touched && !!custom.meta.error && <FormHelperText error>{custom.meta.error}</FormHelperText>}
+        </FormControl>
       )
 }

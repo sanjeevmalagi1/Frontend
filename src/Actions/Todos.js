@@ -2,7 +2,8 @@ import {
     getTodosRequest,
     createTodoRequest,
     updateTodoRequest,
-    deleteTodoRequest
+    deleteTodoRequest,
+    getTodoRequest
 } from '../API/Todos';
 
 export const GET_TODOS_REQUEST = "GET_TODOS_REQUEST";
@@ -30,26 +31,11 @@ export function getTodos(){
     }
 }
 
-export function createTodo(values,callback){
-  return (dispatch) => {
-    //dispatch({ type: GET_TODO_REQUEST })
-    createTodoRequest(values)
-      .then(data =>{
-        callback()
-        //dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
-      })
-      .catch(error =>{
-        //dispatch({ type: GET_TODO_FAILED,payload : error })
-      })
-  }
-}
-
-export function updateTodo(todoId,values){
+export function getTodo(todoId){
   return (dispatch) => {
     dispatch({ type: GET_TODO_REQUEST })
-    updateTodoRequest(todoId,values)
+    getTodoRequest(todoId)
       .then(data =>{
-        console.log(data);
         dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
       })
       .catch(error =>{
@@ -58,10 +44,46 @@ export function updateTodo(todoId,values){
   }
 }
 
+export function createTodo(values,callback){
+  return (dispatch,getState) => {
+    const state = getState();
+    const token = state.auth.token;
+    //dispatch({ type: GET_TODO_REQUEST })
+    createTodoRequest(values,token)
+      .then(data =>{
+        callback(null,true)
+        //dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
+      })
+      .catch(error =>{
+        //dispatch({ type: GET_TODO_FAILED,payload : error })
+        callback(error)
+      })
+  }
+}
+
+export function updateTodo(todoId,values,callback){
+  return (dispatch,getState) => {
+    const state = getState();
+    const token = state.auth.token;
+    dispatch({ type: GET_TODO_REQUEST })
+    updateTodoRequest(todoId,values,token)
+      .then(data =>{
+        dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
+        callback(null,true);
+      })
+      .catch(error =>{
+        dispatch({ type: GET_TODO_FAILED,payload : error })
+        callback(error);
+      })
+  }
+}
+
 export function deleteTodo(todoId,callback){
-  return (dispatch) => {
+  return (dispatch,getState) => {
+    const state = getState();
+    const token = state.auth.token;
     dispatch({ type: DELETE_TODO_REQUEST })
-    deleteTodoRequest(todoId)
+    deleteTodoRequest(todoId,token)
       .then(data =>{
         callback(null,data);
         dispatch({ type: DELETE_TODO_SUCCESS,payload : data.data })

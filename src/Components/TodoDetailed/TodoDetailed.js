@@ -5,8 +5,6 @@ import swal from 'sweetalert';
 import _ from 'lodash';
 import moment from 'moment';
 
-import { Link } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -50,7 +48,7 @@ const styles = theme => ({
 });
 
 
-class Todo extends Component {
+class TodoDetailed extends Component {
 
     handleStatusChange(e){
         if(this.props.details.status === e.target.value){
@@ -82,6 +80,7 @@ class Todo extends Component {
                     }    
                 })
                 swal("Done!", "The Todo has been deleted", "success");
+            
             }
             else {
                 swal("Oops!", "Something wend wrong", "error");
@@ -122,7 +121,7 @@ class Todo extends Component {
                     </div>
 
                     <div className={classes.desc}>
-                        <Typography noWrap>
+                        <Typography>
                             {details.description}
                         </Typography>
                     </div>
@@ -143,31 +142,19 @@ class Todo extends Component {
                     
                 </CardContent>
                 <CardActions>
-                    <Grid container spacing={8}>
-                        <Grid item xs={12}>
-                            <Select
-                            value={details.status}
-                            onChange={this.handleStatusChange.bind(this)}
-                            fullWidth
-                            >
-                                <MenuItem disabled={statusLane+1 !== 0} value={'tobedone'}>To Be Done</MenuItem>
-                                <MenuItem disabled={statusLane+1 !== 1} value={'doing'}>Doing</MenuItem>
-                                <MenuItem disabled={statusLane+1 !== 2} value={'done'}>Done</MenuItem>
-                            </Select>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Link to={`/${details._id}`}>
-                                <Button fullWidth variant="raised" color="primary">
-                                    View
-                                </Button>
-                            </Link>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Button onClick={this.handleDelete.bind(this)} variant="raised" color="secondary" fullWidth>
-                                Delete
-                            </Button>
-                        </Grid>
-                    </Grid>
+                    <Select
+                        value={details.status}
+                        onChange={this.handleStatusChange.bind(this)}
+                        fullWidth
+                    >
+                        <MenuItem disabled={statusLane+1 !== 0} value={'tobedone'}>To Be Done</MenuItem>
+                        <MenuItem disabled={statusLane+1 !== 1} value={'doing'}>Doing</MenuItem>
+                        <MenuItem disabled={statusLane+1 !== 2} value={'done'}>Done</MenuItem>
+                    </Select>
+                    <Button onClick={this.handleDelete.bind(this)} variant="raised" color="secondary" fullWidth>
+                        Delete
+                    </Button>
+                    
                 </CardActions>
             </Card>
         )
@@ -178,4 +165,4 @@ function mapStateToProps(state){
     return {}
 }
 
-export default connect(mapStateToProps,{ updateTodo,deleteTodo })(withStyles(styles)(Todo));
+export default connect(mapStateToProps,{ updateTodo,deleteTodo })(withStyles(styles)(TodoDetailed));

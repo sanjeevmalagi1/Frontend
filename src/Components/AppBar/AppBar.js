@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
@@ -8,11 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import DrawerCust from '../DrawerCust';
 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -31,20 +26,20 @@ const styles = theme => ({
 });
 
 const RightIcon = (props) =>{
-  if(_.isEmpty(props.auth)){
+  if(props.auth.token){
+    return(
+      <Button onClick={props.logout} variant="raised" color="primary">
+        Logout
+      </Button>
+    )
+  }
+  else{
     return(
       <Link to={'/LogIn'}>
         <Button variant="raised" color="primary">
           LOGIN
         </Button>
-      </Link>
-    )
-  }
-  else{
-    return(
-      <Button onClick={props.logout} variant="raised" color="primary">
-        Logout
-      </Button>
+      </Link>  
     )
   }
 }
@@ -69,7 +64,7 @@ class AppBarCust extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Zoyo - Assignment
+              Scripbox - Assignment
             </Typography>
             <RightIcon 
               auth={this.props.auth} 

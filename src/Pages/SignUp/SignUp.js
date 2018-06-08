@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import moment from 'moment';
 
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
@@ -11,23 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-
-import Avatar from '@material-ui/core/Avatar';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
 
 import Typography from '@material-ui/core/Typography';
-import LoadingPlaceholder from 'react-loading-placeholder'
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 
-import { renderField,renderSelectField } from '../../Utils'
+import { renderField } from '../../Utils'
 import { signup } from '../../Actions/Auth';
 
 
@@ -89,21 +75,6 @@ class SignUp extends Component {
                                     required
                                 /> 
                             </div>
-                            <div className={classes.formRow}>
-                                <FormControl className={classes.formControl} fullWidth>
-                                    <InputLabel htmlFor="age-simple">Role</InputLabel>
-                                    <Field 
-                                        fullWidth 
-                                        name="role" 
-                                        component={renderSelectField} 
-                                        required
-                                    >
-                                        <MenuItem value={"Normal"}>Normal</MenuItem>
-                                        <MenuItem value={"Admin"}>Admin</MenuItem>
-                                    </Field>
-                                    
-                                </FormControl>
-                            </div>
                     </CardContent>
                     <CardActions>
                         <Button type="submit" fullWidth variant="raised" color="primary">
@@ -121,13 +92,24 @@ class SignUp extends Component {
 }
 
 function mapStateToProps(){
-    
     return {};
+}
+
+function validate(values) {
+    const errors = {};
+    if(!values.username){
+        errors.username = "Username is required"
+    }
+    if(!values.password){
+        errors.password = "Password is required"
+    }
+    return errors;
 }
 
 const styledSignUp = withStyles(styles)(SignUp);
 const connectedComponenet = connect(mapStateToProps,{ signup })(styledSignUp)
 
 export default reduxForm({
-    form: 'signUpForm'
+    form: 'signUpForm',
+    validate
 })(connectedComponenet)

@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch,Redirect } from 'react-router-dom'
 
+import { connect } from 'react-redux';
+
 import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 
 import AppBarCust from '../../Components/AppBar';
 import DrawerCust from '../../Components/DrawerCust'
@@ -15,8 +13,41 @@ import ListTodos from '../../Pages/ListTodos';
 import CreateTodo from '../../Pages/CreateTodo';
 import LogIn from '../../Pages/LogIn';
 import SignUp from '../../Pages/SignUp';
+import TodoDetails from '../../Pages/TodoDetails';
 
-const drawerWidth = 240;
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest}) => (
+  <Route
+    {...rest}
+    render={props =>{
+      if(!isAuthenticated){
+        return (
+          <Redirect to={{ pathname: '/LogIn', state: { from: props.location} }} />
+        )
+      }
+      return (
+        <Component {...props} />
+      )
+    } 
+  }
+  />
+);
+
+const AuthRoute = ({ component: Component, isAuthenticated, ...rest}) => (
+  <Route
+    {...rest}
+    render={props =>{
+      if(isAuthenticated){
+        return (
+          <Redirect to={{ pathname: '/', state: { from: props.location} }} />
+        )
+      }
+      return (
+        <Component {...props} />
+      )
+    } 
+  }
+  />
+);
 
 const styles = theme => ({
   root: {
@@ -37,9 +68,9 @@ const styles = theme => ({
   toolbar: theme.mixins.toolbar,
 });
 
-function ClippedDrawer(props) {
+function Main(props) {
   const { classes } = props;
-
+  
   return (
     <div className={classes.root}>
       <AppBarCust />
@@ -48,11 +79,11 @@ function ClippedDrawer(props) {
         <div className={classes.toolbar} />
         <div className={classes.mainContent}>
           <Switch>
-          
             <Route exact path="/" name="Todo List" component={ListTodos}/>
-            <Route exact path="/CreateTodo" name="Create Todo" component={CreateTodo}/>
-            <Route exact path="/LogIn" name="Log In" component={LogIn}/>
-            <Route exact path="/SignUp" name="Sign Up" component={SignUp}/>
+            <PrivateRoute exact path="/CreateTodo"  isAuthenticated={props.auth.token} name="Create Todo" component={CreateTodo} />
+            <AuthRoute isAuthenticated={props.auth.token} exact path="/LogIn" name="Log In" component={LogIn}/>
+            <AuthRoute isAuthenticated={props.auth.token} exact path="/SignUp" name="Sign Up" component={SignUp}/>
+            <Route exact path="/:todoId" name="View Todo" component={TodoDetails}/>
           </Switch>
         </div>
       </main>
@@ -60,8 +91,14 @@ function ClippedDrawer(props) {
   );
 }
 
-ClippedDrawer.propTypes = {
+Main.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ClippedDrawer);
+function  mapStateToProps(state) {
+    return {
+      auth : state.auth
+    }
+}
+
+export default connect(mapStateToProps,{})(withStyles(styles)(Main));

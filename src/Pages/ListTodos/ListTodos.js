@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button'
 
 import LoadingPlaceholder from 'react-loading-placeholder'
@@ -15,7 +14,6 @@ import SearchBar from '../../Components/SearchBar';
 import Todo from '../../Components/Todo'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 
 import { getTodos } from '../../Actions/Todos';
 
@@ -30,7 +28,7 @@ const styles = theme => ({
         margin : 'auto'
     },
     new : {
-        height : '340px',
+        height : '390px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -79,7 +77,6 @@ class ListTodos extends Component {
 }
 
 function mapStateToProps(state){
-    console.log(state);
     return {
         todos : state.todos
     };
