@@ -1,6 +1,7 @@
-import _ from 'lodash';
-
-export default function(state={},action){
+const INITIAL_STATE = {
+    search : ""
+};
+export default function(state=INITIAL_STATE,action){
     switch (action.type) {
         case "SEARCH_CHANGED":{
             return {

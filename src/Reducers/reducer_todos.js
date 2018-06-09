@@ -59,6 +59,7 @@ export default function(state=INITIAL_STATE,action){
         }
         case DELETE_TODO_SUCCESS : {
             const { payload } = action;
+            
             return {
                 ...state,
                 data : _.omit(state.data , payload._id)

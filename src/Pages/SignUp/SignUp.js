@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'; 
+import swal from 'sweetalert';
 
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -33,10 +34,10 @@ class SignUp extends Component {
 
     onSubmit(values){
         this.props.signup(values,(error,done)=>{
-            if(done){
-                this.props.history.push('/')     
+            if(error.response){
+                swal("Sorry", error.response.data.message, "error");
             }
-        })
+        });
     }
 
     render() {

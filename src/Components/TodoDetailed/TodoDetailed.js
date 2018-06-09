@@ -58,14 +58,11 @@ class TodoDetailed extends Component {
         .then((yes) => {
             if(yes){
                 this.props.updateTodo(this.props.details._id,{ status : e.target.value },(error,done)=>{
-                    if(!done){
-                        swal("Oops!", "You are not authorized to do this", "error");        
+                    if(error.response){
+                        swal("Sorry", error.response.data.message, "error");
                     }
                 })
                 swal("Done!", "Status has now changed", "success");
-            }
-            else {
-                swal("Oops!", "Something wend wrong", "error");
             }
         });
     }
@@ -75,15 +72,11 @@ class TodoDetailed extends Component {
         .then(yes => {
             if(yes){
                 this.props.deleteTodo(this.props.details._id,(error,result)=>{
-                    if(error){
-                        swal("Oops!", "You are not authorized", "error");
-                    }    
+                    if(error.response){
+                        swal("Sorry", error.response.data.message, "error");
+                    }   
                 })
                 swal("Done!", "The Todo has been deleted", "success");
-            
-            }
-            else {
-                swal("Oops!", "Something wend wrong", "error");
             }
         })
     }

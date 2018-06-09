@@ -51,8 +51,8 @@ export function createTodo(values,callback){
     //dispatch({ type: GET_TODO_REQUEST })
     createTodoRequest(values,token)
       .then(data =>{
-        callback(null,true)
         //dispatch({ type: GET_TODO_SUCCESS,payload : data.data })
+        callback(null,true)
       })
       .catch(error =>{
         //dispatch({ type: GET_TODO_FAILED,payload : error })
@@ -85,12 +85,12 @@ export function deleteTodo(todoId,callback){
     dispatch({ type: DELETE_TODO_REQUEST })
     deleteTodoRequest(todoId,token)
       .then(data =>{
-        callback(null,data);
         dispatch({ type: DELETE_TODO_SUCCESS,payload : data.data })
+        callback(null,data);
       })
       .catch(error =>{
-        callback(error);
         dispatch({ type: DELETE_TODO_FAILED,payload : error })
+        callback(error);
       })
   }
 }

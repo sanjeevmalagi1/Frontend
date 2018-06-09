@@ -64,7 +64,7 @@ class AppBarCust extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Scripbox - Assignment
+              Scripbox
             </Typography>
             <RightIcon 
               auth={this.props.auth} 

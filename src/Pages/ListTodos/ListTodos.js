@@ -16,6 +16,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 import { getTodos } from '../../Actions/Todos';
+import { searchFilter } from '../../Utils'
 
 const styles = theme => ({
     content: {
@@ -44,14 +45,14 @@ class ListTodos extends Component {
     }
 
     render() {
-        const { classes,todos } = this.props;
+        const { classes,todos,searchQuery } = this.props;
         
         if(todos.error){
             return <div>Check your Internet Connection</div>
         }
         
         const todoItems = _.chain(todos.data)
-                           .filter(todo=>( true ))
+                           .filter(todo=>(searchFilter(todo,searchQuery)))
                            .map((todo,key)=><Grid className={classes.item} key={key} item md={4} sm={6} xs={12}><Todo details={todo} /></Grid>)
                            .value();
         
@@ -78,7 +79,8 @@ class ListTodos extends Component {
 
 function mapStateToProps(state){
     return {
-        todos : state.todos
+        todos : state.todos,
+        searchQuery : state.filter.search
     };
 }
 

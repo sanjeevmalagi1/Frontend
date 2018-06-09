@@ -63,8 +63,6 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     minWidth: 0, // So the Typography noWrap works
   },
-  mainContent : {
-  },
   toolbar: theme.mixins.toolbar,
 });
 
@@ -77,7 +75,7 @@ function Main(props) {
       <DrawerCust />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div className={classes.mainContent}>
+        <div>
           <Switch>
             <Route exact path="/" name="Todo List" component={ListTodos}/>
             <PrivateRoute exact path="/CreateTodo"  isAuthenticated={props.auth.token} name="Create Todo" component={CreateTodo} />

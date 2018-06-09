@@ -56,3 +56,11 @@ export const renderSelectField = ({
         </FormControl>
       )
 }
+
+export function searchFilter(todo,query) {
+  const upperQuery = query.toUpperCase();
+  const upperTitle = todo.title.toUpperCase();
+  const upperDescription = todo.description.toUpperCase();
+
+  return  (upperTitle.indexOf(upperQuery) > -1) || (upperDescription.indexOf(upperQuery) > -1)
+}

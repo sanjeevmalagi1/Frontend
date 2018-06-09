@@ -13,28 +13,32 @@ export const SIGNUP_FAILED = "SIGNUP_FAILED";
 
 export const LOGOUT = "LOGOUT";
 
-export function login(values){
+export function login(values,callback){
     return (dispatch) => {
       dispatch({ type: LOGIN_REQUEST })
       loginRequest(values)
         .then(data =>{
           dispatch({ type: LOGIN_SUCCESS,payload : data.data })
+          callback(null,true);
         })
         .catch(error =>{
           dispatch({ type: LOGIN_FAILED,payload : error })
+          callback(error);
         })
     }
 }
 
-export function signup(values){
+export function signup(values,callback){
     return (dispatch) => {
       dispatch({ type: SIGNUP_REQUEST })
       signupRequest(values)
         .then(data =>{
           dispatch({ type: SIGNUP_SUCCESS,payload : data.data })
+          callback(null,true)
         })
         .catch(error =>{
           dispatch({ type: SIGNUP_FAILED,payload : error })
+          callback(error);
         })
     }
 }

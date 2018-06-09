@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-
+import swal from 'sweetalert';
 
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -33,7 +33,11 @@ const styles = theme => ({
 class LogIn extends Component {
 
     onSubmit(values){
-        this.props.login(values);
+        this.props.login(values,(error,done)=>{
+            if(error.response){
+                swal("Sorry", error.response.data.message, "error");
+            }
+        });
     }
 
     render() {
@@ -90,7 +94,6 @@ class LogIn extends Component {
 }
 
 function mapStateToProps(){
-    
     return {};
 }
 

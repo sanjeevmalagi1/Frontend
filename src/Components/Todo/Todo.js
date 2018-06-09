@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import _ from 'lodash';
 import moment from 'moment';
 
+import Grow from '@material-ui/core/Grow';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
@@ -60,14 +61,11 @@ class Todo extends Component {
         .then((yes) => {
             if(yes){
                 this.props.updateTodo(this.props.details._id,{ status : e.target.value },(error,done)=>{
-                    if(!done){
-                        swal("Oops!", "You are not authorized to do this", "error");        
+                    if(error.response){
+                        swal("Sorry", error.response.data.message, "error");
                     }
                 })
                 swal("Done!", "Status has now changed", "success");
-            }
-            else {
-                swal("Oops!", "Something wend wrong", "error");
             }
         });
     }
@@ -77,14 +75,11 @@ class Todo extends Component {
         .then(yes => {
             if(yes){
                 this.props.deleteTodo(this.props.details._id,(error,result)=>{
-                    if(error){
-                        swal("Oops!", "You are not authorized", "error");
-                    }    
+                    if(error.response){
+                        swal("Sorry", error.response.data.message, "error");
+                    }   
                 })
                 swal("Done!", "The Todo has been deleted", "success");
-            }
-            else {
-                swal("Oops!", "Something wend wrong", "error");
             }
         })
     }
@@ -98,78 +93,80 @@ class Todo extends Component {
         const tags = _.map(details.tags,(tag,key)=><Chip key={key} label={tag} className={classes.chip} />)
         
         return (
-            <Card className={classes.card} >
-                <CardContent>
-                    <Typography variant="caption" align="center" color="textSecondary">
-                        { details.status.toUpperCase() }
-                    </Typography>
-
-                    <Typography variant="headline" align="center" color="textSecondary">
-                        { details.title }
-                    </Typography>
-                    
-                    <div className={classes.dueDate}>
-                        <Typography align="center" variant="caption" >
-                            DUE DATE
-                        </Typography>
-                        <Typography variant="subheading" align="center">
-                        { moment(details.dueDate).format('DD : MMM : YYYY') }
-                        </Typography>
-                    </div>
-
-                    <div className={classes.tags}>
-                        { tags }
-                    </div>
-
-                    <div className={classes.desc}>
-                        <Typography noWrap>
-                            {details.description}
-                        </Typography>
-                    </div>
-
-                    { details.assignedTo ?   
-                    <div>
+            <Grow in>
+                <Card className={classes.card} >
+                    <CardContent>
                         <Typography variant="caption" align="center" color="textSecondary">
-                            ASSIGNED TO
+                            { details.status.toUpperCase() }
                         </Typography>
-                        <ListItem className={classes.userDetails} button>
-                            <Avatar className={classes.avatar}>{details.assignedTo.username.substring(0,2).toUpperCase() }</Avatar>
-                            <ListItemText>{details.assignedTo.username}</ListItemText>
-                        </ListItem>
-                    </div>                  
-                    :
-                    null
-                    }
-                    
-                </CardContent>
-                <CardActions>
-                    <Grid container spacing={8}>
-                        <Grid item xs={12}>
-                            <Select
-                            value={details.status}
-                            onChange={this.handleStatusChange.bind(this)}
-                            fullWidth
-                            >
-                                <MenuItem disabled={statusLane+1 !== 0} value={'tobedone'}>To Be Done</MenuItem>
-                                <MenuItem disabled={statusLane+1 !== 1} value={'doing'}>Doing</MenuItem>
-                                <MenuItem disabled={statusLane+1 !== 2} value={'done'}>Done</MenuItem>
-                            </Select>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Link to={`/${details._id}`}>
-                                <Button fullWidth variant="raised" color="primary">
-                                    View
+
+                        <Typography variant="headline" align="center" color="textSecondary">
+                            { details.title }
+                        </Typography>
+                        
+                        <div className={classes.dueDate}>
+                            <Typography align="center" variant="caption" >
+                                DUE DATE
+                            </Typography>
+                            <Typography variant="subheading" align="center">
+                            { moment(details.dueDate).format('DD : MMM : YYYY') }
+                            </Typography>
+                        </div>
+
+                        <div className={classes.tags}>
+                            { tags }
+                        </div>
+
+                        <div className={classes.desc}>
+                            <Typography noWrap>
+                                {details.description}
+                            </Typography>
+                        </div>
+
+                        { details.assignedTo ?   
+                        <div>
+                            <Typography variant="caption" align="center" color="textSecondary">
+                                ASSIGNED TO
+                            </Typography>
+                            <ListItem className={classes.userDetails} button>
+                                <Avatar className={classes.avatar}>{details.assignedTo.username.substring(0,2).toUpperCase() }</Avatar>
+                                <ListItemText>{details.assignedTo.username}</ListItemText>
+                            </ListItem>
+                        </div>                  
+                        :
+                        null
+                        }
+                        
+                    </CardContent>
+                    <CardActions>
+                        <Grid container spacing={8}>
+                            <Grid item xs={12}>
+                                <Select
+                                value={details.status}
+                                onChange={this.handleStatusChange.bind(this)}
+                                fullWidth
+                                >
+                                    <MenuItem disabled={statusLane+1 !== 0} value={'tobedone'}>To Be Done</MenuItem>
+                                    <MenuItem disabled={statusLane+1 !== 1} value={'doing'}>Doing</MenuItem>
+                                    <MenuItem disabled={statusLane+1 !== 2} value={'done'}>Done</MenuItem>
+                                </Select>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Link to={`/${details._id}`}>
+                                    <Button fullWidth variant="raised" color="primary">
+                                        View
+                                    </Button>
+                                </Link>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button onClick={this.handleDelete.bind(this)} variant="raised" color="secondary" fullWidth>
+                                    Delete
                                 </Button>
-                            </Link>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Button onClick={this.handleDelete.bind(this)} variant="raised" color="secondary" fullWidth>
-                                Delete
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </CardActions>
-            </Card>
+                    </CardActions>
+                </Card>
+            </Grow>
         )
     }
 }
